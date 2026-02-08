@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ todo.title }} - Agentic Todo{% endblock %}
+
+{% block content %}
+<div class="todo-detail">
+    <div class="todo-header">
+        <h1>{{ todo.title }}</h1>
+        <div class="todo-actions">
+            <a href="/todos/{{ todo.id }}/edit" class="btn">Edit</a>
+            <form method="post" action="/todos/{{ todo.id }}/toggle" style="display:inline">
+                <button type="submit" class="btn">
+                    {% if todo.completed %}Mark Incomplete{% else %}Mark Complete{% endif %}
+                </button>
+            </form>
+            <form method="post" action="/todos/{{ todo.id }}/delete" style="display:inline">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="todo-meta">
+        <span class="todo-phase">Phase: {{ todo.phase.value|capitalize }}</span>
+        <span class="todo-priority priority-{{ todo.priority.value }}">{{ todo.priority.value|upper }}</span>
+        {% if todo.due_date %}
+        <span class="todo-due">Due: {{ todo.due_date }}</span>
+        {% endif %}
+        <span class="todo-status">{% if todo.completed %}✓ Completed{% else %}○ Pending{% endif %}</span>
+    </div>
+
+    {% if todo.description %}
+    <div class="todo-description">
+        <h3>Description</h3>
+        <p>{{ todo.description }}</p>
+    </div>
+    {% endif %}
+
+    <div class="recommended-skills">
+        <h2>Recommended for {{ todo.phase.value|capitalize }} Phase</h2>
+        {% for skill in recommended_skills %}
+        <div class="skill-card">
+            <h3>📘 {{ skill.name }}</h3>
+            <p>{{ skill.description }}</p>
+            <p><strong>Use when:</strong> {{ skill.when_to_use }}</p>
+            {% if skill.key_steps %}
+            <p><strong>Steps:</strong> {{ skill.key_steps|join(" → ") }}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

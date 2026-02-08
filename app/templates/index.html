@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Agentic Todo{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="phase-tabs">
+    {% for phase_name in phases %}
+    <span class="phase-tab">{{ phase_name|capitalize }} ({{ todos_by_phase[phase_name]|length }})</span>
+    {% endfor %}
+</div>
+
+{% for phase_name, phase_todos in todos_by_phase.items() %}
+{% if phase_todos %}
+<section class="phase-section">
+    <h2>{{ phase_name|capitalize }}</h2>
+    <ul class="todo-list">
+        {% for todo in phase_todos %}
+        <li class="todo-item {% if todo.completed %}completed{% endif %}">
+            <a href="/todos/{{ todo.id }}">
+                <span class="todo-checkbox">{% if todo.completed %}☑{% else %}☐{% endif %}</span>
+                <span class="todo-title">{{ todo.title }}</span>
+                <span class="todo-priority priority-{{ todo.priority.value }}">{{ todo.priority.value|upper }}</span>
+                {% if todo.due_date %}
+                <span class="todo-due">Due: {{ todo.due_date }}</span>
+                {% endif %}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <div class="phase-skills">
+        💡 Recommended: {{ skills_by_phase[phase_name]|join(", ") }}
+    </div>
+</section>
+{% endif %}
+{% endfor %}
+
+{% if not todos_by_phase.values()|sum(start=[]) %}
+<p class="empty-state">No todos yet. <a href="/todos/new">Create one</a>.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Todos - Agentic Todo{% endblock %}
+
+{% block content %}
+<h1>All Todos</h1>
+
+<form class="filters" method="get">
+    <select name="phase">
+        <option value="">All Phases</option>
+        {% for p in phases %}
+        <option value="{{ p }}" {% if phase == p %}selected{% endif %}>{{ p|capitalize }}</option>
+        {% endfor %}
+    </select>
+    <select name="priority">
+        <option value="">All Priorities</option>
+        {% for p in priorities %}
+        <option value="{{ p }}" {% if priority == p %}selected{% endif %}>{{ p|capitalize }}</option>
+        {% endfor %}
+    </select>
+    <select name="completed">
+        <option value="">All Status</option>
+        <option value="true" {% if completed == "true" %}selected{% endif %}>Completed</option>
+        <option value="false" {% if completed == "false" %}selected{% endif %}>Pending</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+<ul class="todo-list">
+    {% for todo in todos %}
+    <li class="todo-item {% if todo.completed %}completed{% endif %}">
+        <a href="/todos/{{ todo.id }}">
+            <span class="todo-checkbox">{% if todo.completed %}☑{% else %}☐{% endif %}</span>
+            <span class="todo-title">{{ todo.title }}</span>
+            <span class="todo-phase">{{ todo.phase.value|capitalize }}</span>
+            <span class="todo-priority priority-{{ todo.priority.value }}">{{ todo.priority.value|upper }}</span>
+        </a>
+    </li>
+    {% else %}
+    <li class="empty-state">No todos match your filters.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

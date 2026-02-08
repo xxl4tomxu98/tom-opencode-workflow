@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}{% if todo %}Edit{% else %}New{% endif %} Todo - Agentic Todo{% endblock %}
+
+{% block content %}
+<h1>{% if todo %}Edit Todo{% else %}New Todo{% endif %}</h1>
+
+<form method="post" class="todo-form">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required maxlength="200"
+               value="{{ todo.title if todo else '' }}">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" name="description" rows="4">{{ todo.description if todo and todo.description else '' }}</textarea>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group">
+            <label for="phase">Phase</label>
+            <select id="phase" name="phase" required>
+                {% for p in phases %}
+                <option value="{{ p }}" {% if todo and todo.phase.value == p %}selected{% endif %}>
+                    {{ p|capitalize }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <select id="priority" name="priority" required>
+                {% for p in priorities %}
+                <option value="{{ p }}" {% if todo and todo.priority.value == p %}selected{% endif %}>
+                    {{ p|capitalize }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="due_date">Due Date</label>
+            <input type="date" id="due_date" name="due_date"
+                   value="{{ todo.due_date if todo and todo.due_date else '' }}">
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+            {% if todo %}Update{% else %}Create{% endif %} Todo
+        </button>
+        <a href="{% if todo %}/todos/{{ todo.id }}{% else %}/{% endif %}" class="btn">Cancel</a>
+    </div>
+</form>
+{% endblock %}

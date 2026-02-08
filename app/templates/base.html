@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Agentic Todo{% endblock %}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-brand"><a href="/">Agentic Todo</a></div>
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/todos">Todos</a>
+            <a href="/phases">Phases</a>
+            <a href="/todos/new" class="btn-new">+ New Todo</a>
+        </div>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

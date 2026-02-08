@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Phases - Agentic Todo{% endblock %}
+
+{% block content %}
+<h1>Development Phases & Recommended Skills</h1>
+
+{% for phase in phases %}
+<section class="phase-detail">
+    <h2>{{ phase.name|capitalize }}</h2>
+    <div class="skills-grid">
+        {% for skill in phase.skills %}
+        <div class="skill-card">
+            <h3>📘 {{ skill.name }}</h3>
+            <p>{{ skill.description }}</p>
+            <p><strong>Use when:</strong> {{ skill.when_to_use }}</p>
+            {% if skill.key_steps %}
+            <div class="skill-steps">
+                <strong>Steps:</strong>
+                <ol>
+                    {% for step in skill.key_steps %}
+                    <li>{{ step }}</li>
+                    {% endfor %}
+                </ol>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endfor %}
+{% endblock %}
